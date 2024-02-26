@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="Weatherall.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+<div class="container">
+  <h2>Weather App</h2>
+  <input type="text" id="countryName" placeholder="Enter your country name">
+  <button onclick="myFunc()">Find it</button>
+  <img src="" alt="myImg" id="myImage">
+  <p id="temp"></p>
+  <div class="content">
+
+   <span id="city"></span>
+   
+   <span id="country"></span>
+   <div class="first_cont">
+  <p id="hum"><br><i class="bi bi-tornado" id="i"></i></p>
+     
+  <p id="deg"> <br><i class="bi bi-thermometer-half" id="ii"></i></p>
+   </div>
+<div class="sec_cont">
+    <p id="speed"><br> <i class="bi bi-wind" id="iii"></i></p>
+  <p id="press"><br><i class="bi bi-tsunami" id="iiii"></i></p>
+</div>
+
+  </div>
+
+</div>
+
+<script>
+  function myFunc(){
+    const myCountry = document.getElementById("countryName").value;
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${myCountry}&units=metric&appid=4b4f6eb27f25ef64374f5d2e3a351789`)
+    .then(function(response){
+      return response.json();
+    })
+    .then(function(data){
+     console.log(data)
+     const Citytemp = data.main.temp;
+   const CityName = data.name;
+      const CountryName = data.sys.country;
+      const Cityhumidity = data.main.humidity;
+    const CityDeg = data.wind.deg;
+    const CitySpeed = data.wind.speed;
+    const CityPressure = data.main.pressure;
+    document.getElementById("temp").innerHTML += Citytemp + " °C";
+    document.getElementById("city").innerHTML = CityName;
+  document.getElementById("country").innerHTML = CountryName;
+  document.getElementById("hum").innerHTML += Cityhumidity + " humidity";
+  document.getElementById("deg").innerHTML += CityDeg + "Temperature"; 
+  document.getElementById("speed").innerHTML += CitySpeed + " Wind";  
+  document.getElementById("press").innerHTML += CityPressure + " pressure"; 
+  const icons = document.getElementById("i");
+    const icons2 = document.getElementById("ii");
+    const icons3 = document.getElementById("iii");
+    const icons4 = document.getElementById("iiii");
+  //console.log(i);
+  icons.style.display = "initial";
+  icons2.style.display = "initial";
+ icons3.style.display = "initial";
+  icons4.style.display = "initial";
+  
+ /* console.log(CityName);
+  console.log(CountryName)
+    console.log(Cityhumidity);
+  console.log(CityDeg)
+  console.log(CitySpeed);
+  console.log(CityPressure) */
+    
+   const IconData = data.weather[0].icon;
+     const myImage = `https://openweathermap.org/img/wn/${IconData}@2x.png`
+     const image = document.getElementById("myImage");
+     image.src= myImage;
+     image.style.display= "initial";
+    image.style.marginLeft = "30%";
+  
+    })
+    .catch(function(error){
+      alert("Invalid city name");
+      return;
+      console.log("Something went wrong");
+      console.error(error);
+    })
+    
+  }
+</script>
+</body>
+
+</html>
